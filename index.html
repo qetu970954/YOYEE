@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7f8fa">
+  <title>YOYEE | Your Own Yocto &amp; Embedded Education</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <a class="brand" href="#home" aria-label="YOYEE home"><span class="brand-icon" aria-hidden="true">▦</span><strong>YOYEE</strong></a>
+      <nav aria-label="Main navigation">
+        <a href="#home" class="nav-link" id="nav-home"><span aria-hidden="true">▧</span> Dashboard</a>
+        <a href="#settings" class="nav-link" id="nav-settings"><span aria-hidden="true">⚙</span> Settings</a>
+      </nav>
+      <div class="side-label course-label">BOOTLIN COURSES</div>
+      <nav class="course-nav" aria-label="Bootlin courses">
+        <a href="#course/embedded-linux" class="nav-link" data-course="embedded-linux"><span aria-hidden="true">01</span> Embedded Linux</a>
+        <a href="#course/linux-kernel" class="nav-link" data-course="linux-kernel"><span aria-hidden="true">02</span> Kernel drivers</a>
+        <a href="#course/yocto" class="nav-link" data-course="yocto"><span aria-hidden="true">03</span> Yocto</a>
+        <a href="#course/debugging" class="nav-link" data-course="debugging"><span aria-hidden="true">04</span> Debugging</a>
+      </nav>
+    </aside>
+    <main class="main"><div id="app" class="content" aria-live="polite"><p>Loading courses…</p></div></main>
+  </div>
+</body>
+</html>
