@@ -57,3 +57,7 @@ Run `npm test` for the index, server and browser checks. The browser check is sk
 The intended target is a BeagleBone Black Rev C, with native Ubuntu 24.04 as the development host. The slide decks are reference materials, not verification that their examples have been executed here. Bootlin's debugging course lists lab materials for STM32MP1 and BeaglePlay, not a BBB-specific manual. Adaptations require separate verification.
 
 Before wiring, changing boot settings or writing media, identify the hardware, check voltage compatibility and establish a recovery path. In particular, the LCD backpack and its I²C pull-up voltage are not yet identified. Never connect an unverified 5 V signal to BBB 3.3 V I/O.
+
+
+------------------------------------------------------------------------------------------------------------------
+- 20261110: Complete section 1, course 6. Many terms. eMMC/SPI/etc....General idea okay. Still need get familier to these terms.
