@@ -75,6 +75,6 @@ Before wiring, changing boot settings or writing media, identify the hardware, c
 
 
 ------------------------------------------------------------------------------------------------------------------
-- 20261110: Complete course 1, section 1~6. Many terms. eMMC/SPI/etc....General idea okay. Still need get familier to these terms.
-- 20261111: Complete course 1, section 7. Have lab that use `crosstool-ng` to build my own compile tool chain on my HOST.
+- 20261110: Complete course 1, section 1. Many terms. eMMC/SPI/etc....General idea okay. Still need get familier to these terms.
+- 20261111: Complete course 1, section 2. Have lab that use `crosstool-ng` to build my own compile tool chain on my HOST.
 
