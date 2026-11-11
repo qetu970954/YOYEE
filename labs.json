@@ -1,0 +1,38 @@
+{
+  "snapshot": "2026-11-11",
+  "labs": [
+    {
+      "id": "embedded-linux",
+      "board": "BeagleBone Black",
+      "file": "embedded-linux-bbb-labs.pdf",
+      "pages": 71,
+      "source": "https://bootlin.com/doc/training/embedded-linux/embedded-linux-bbb-labs.pdf",
+      "sha256": "d7413634034c9b93f62e3cae47ccd24ad7065f443ddfec4cc8ebc1550bdf85e1"
+    },
+    {
+      "id": "linux-kernel",
+      "board": "BeagleBone Black",
+      "file": "linux-kernel-bbb-labs.pdf",
+      "pages": 55,
+      "source": "https://bootlin.com/doc/training/linux-kernel/linux-kernel-bbb-labs.pdf",
+      "sha256": "5364fdde2011b3ec1d3e22881a3fec519a0b95383884eb90a2f52dafe3e0c358"
+    },
+    {
+      "id": "yocto",
+      "board": "BeagleBone Black",
+      "file": "yocto-bbb-labs.pdf",
+      "pages": 28,
+      "source": "https://bootlin.com/doc/training/yocto/yocto-bbb-labs.pdf",
+      "sha256": "f90bc117e211cd0ca1c236ef78217070c02c10729800e04e1ac43577166e6538"
+    },
+    {
+      "id": "debugging",
+      "board": "BeaglePlay",
+      "file": "debugging-beagleplay-labs.pdf",
+      "pages": 34,
+      "source": "https://bootlin.com/doc/training/debugging/debugging-beagleplay-labs.pdf",
+      "sha256": "0b77214cd3efaf5d5e952f3831d49943ad2c3360791090f50fe3de6897aa05ce",
+      "notice": "This manual targets BeaglePlay, not BeagleBone Black. Hardware steps require separate verification."
+    }
+  ]
+}

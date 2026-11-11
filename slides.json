@@ -5,7 +5,7 @@
       "title": "Embedded Linux system development",
       "pages": 552,
       "sha256": "7603ee5367055e071fd6ae23285dcc638447864f6f282435201b86d7e130d587",
-      "sections": [
+      "chapters": [
         {
           "title": "Course introduction and information",
           "start": 1,
@@ -111,6 +111,125 @@
           "start": 551,
           "end": 552
         }
+      ],
+      "sections": [
+        {
+          "title": "Course orientation and embedded Linux foundations",
+          "start": 1,
+          "end": 47,
+          "readingMinutes": 23
+        },
+        {
+          "title": "Cross-compiling toolchains",
+          "start": 48,
+          "end": 85,
+          "readingMinutes": 24
+        },
+        {
+          "title": "Bootloaders and firmware — Part 1",
+          "start": 86,
+          "end": 124,
+          "readingMinutes": 25
+        },
+        {
+          "title": "Bootloaders and firmware — Part 2",
+          "start": 125,
+          "end": 142,
+          "readingMinutes": 20
+        },
+        {
+          "title": "Bootloaders and firmware — Part 3",
+          "start": 143,
+          "end": 166,
+          "readingMinutes": 22
+        },
+        {
+          "title": "Linux kernel introduction",
+          "start": 167,
+          "end": 217,
+          "readingMinutes": 29
+        },
+        {
+          "title": "Root filesystems and BusyBox",
+          "start": 218,
+          "end": 256,
+          "readingMinutes": 26
+        },
+        {
+          "title": "Accessing hardware devices — Part 1",
+          "start": 257,
+          "end": 294,
+          "readingMinutes": 25
+        },
+        {
+          "title": "Accessing hardware devices — Part 2",
+          "start": 295,
+          "end": 321,
+          "readingMinutes": 22
+        },
+        {
+          "title": "Accessing hardware devices — Part 3",
+          "start": 322,
+          "end": 343,
+          "readingMinutes": 20
+        },
+        {
+          "title": "Block filesystems",
+          "start": 344,
+          "end": 371,
+          "readingMinutes": 23
+        },
+        {
+          "title": "Flash storage and filesystems",
+          "start": 372,
+          "end": 387,
+          "readingMinutes": 17,
+          "timingNote": "A self-contained raw-flash topic; merging with either the full block-filesystem chapter or the following cross-compilation chapter would be oversized or unrelated."
+        },
+        {
+          "title": "Cross-compiling user-space libraries and applications",
+          "start": 388,
+          "end": 415,
+          "readingMinutes": 24
+        },
+        {
+          "title": "Embedded system building tools",
+          "start": 416,
+          "end": 451,
+          "readingMinutes": 25
+        },
+        {
+          "title": "Open source licenses and compliance",
+          "start": 452,
+          "end": 471,
+          "readingMinutes": 16,
+          "timingNote": "Keep the complete compliance topic separate from the following technical software-stack survey rather than combining unrelated material to fill a timer."
+        },
+        {
+          "title": "Overview of major embedded Linux software stacks",
+          "start": 472,
+          "end": 501,
+          "readingMinutes": 22
+        },
+        {
+          "title": "Embedded Linux application development — Part 1",
+          "start": 502,
+          "end": 521,
+          "readingMinutes": 20
+        },
+        {
+          "title": "Embedded Linux application development — Part 2",
+          "start": 522,
+          "end": 542,
+          "readingMinutes": 21
+        },
+        {
+          "title": "Further reading, attribution and supplementary networking",
+          "start": 543,
+          "end": 552,
+          "readingMinutes": 6,
+          "timingNote": "This short end-of-course wrap-up contains references, attribution and one supplementary diagram; padding it with unrelated earlier material would obscure the course ending."
+        }
       ]
     },
     {
@@ -118,7 +237,7 @@
       "title": "Linux kernel driver development",
       "pages": 446,
       "sha256": "d1341fbebe4246bf121d6c3f4b660cc26ace68c1767d7b3eea768949b5dc9a0b",
-      "sections": [
+      "chapters": [
         {
           "title": "Course introduction and information",
           "start": 1,
@@ -224,6 +343,110 @@
           "start": 431,
           "end": 446
         }
+      ],
+      "sections": [
+        {
+          "title": "Course orientation and Linux kernel introduction",
+          "start": 1,
+          "end": 48,
+          "readingMinutes": 28
+        },
+        {
+          "title": "Linux Kernel Usage",
+          "start": 49,
+          "end": 91,
+          "readingMinutes": 27
+        },
+        {
+          "title": "Developing kernel modules",
+          "start": 92,
+          "end": 108,
+          "readingMinutes": 21
+        },
+        {
+          "title": "Describing hardware devices — Part 1",
+          "start": 109,
+          "end": 131,
+          "readingMinutes": 23
+        },
+        {
+          "title": "Describing hardware devices — Part 2",
+          "start": 132,
+          "end": 164,
+          "readingMinutes": 28
+        },
+        {
+          "title": "Pin muxing and the Linux device model",
+          "start": 165,
+          "end": 203,
+          "readingMinutes": 26
+        },
+        {
+          "title": "Introduction to the I2C subsystem",
+          "start": 204,
+          "end": 223,
+          "readingMinutes": 23
+        },
+        {
+          "title": "Kernel frameworks for device drivers — Part 1",
+          "start": 224,
+          "end": 243,
+          "readingMinutes": 23
+        },
+        {
+          "title": "Kernel frameworks for device drivers — Part 2",
+          "start": 244,
+          "end": 265,
+          "readingMinutes": 23
+        },
+        {
+          "title": "Memory Management",
+          "start": 266,
+          "end": 287,
+          "readingMinutes": 23
+        },
+        {
+          "title": "I/O memory, power management and misc devices",
+          "start": 288,
+          "end": 315,
+          "readingMinutes": 24
+        },
+        {
+          "title": "Processes, scheduling and interrupts — Part 1",
+          "start": 316,
+          "end": 335,
+          "readingMinutes": 22
+        },
+        {
+          "title": "Processes, scheduling and interrupts — Part 2",
+          "start": 336,
+          "end": 351,
+          "readingMinutes": 23
+        },
+        {
+          "title": "Concurrent Access to Resources: Locking",
+          "start": 352,
+          "end": 374,
+          "readingMinutes": 24
+        },
+        {
+          "title": "Direct Memory Access",
+          "start": 375,
+          "end": 400,
+          "readingMinutes": 25
+        },
+        {
+          "title": "Kernel debugging",
+          "start": 401,
+          "end": 420,
+          "readingMinutes": 22
+        },
+        {
+          "title": "Further reading and supplementary kernel APIs",
+          "start": 421,
+          "end": 446,
+          "readingMinutes": 20
+        }
       ]
     },
     {
@@ -231,7 +454,7 @@
       "title": "Yocto Project and OpenEmbedded",
       "pages": 335,
       "sha256": "d052abfdecf8bbc4c0d8c3be64d27fefab8fb274ed26d036d6e50805e5b711d2",
-      "sections": [
+      "chapters": [
         {
           "title": "Course introduction and information",
           "start": 1,
@@ -342,6 +565,76 @@
           "start": 323,
           "end": 335
         }
+      ],
+      "sections": [
+        {
+          "title": "Course orientation and Yocto foundations",
+          "start": 1,
+          "end": 45,
+          "readingMinutes": 25
+        },
+        {
+          "title": "Using Yocto Project: builds and advanced configuration",
+          "start": 46,
+          "end": 89,
+          "readingMinutes": 25
+        },
+        {
+          "title": "Writing recipes - basics",
+          "start": 90,
+          "end": 129,
+          "readingMinutes": 26
+        },
+        {
+          "title": "Writing recipes - advanced",
+          "start": 130,
+          "end": 162,
+          "readingMinutes": 25
+        },
+        {
+          "title": "Layers",
+          "start": 163,
+          "end": 181,
+          "readingMinutes": 19,
+          "timingNote": "This complete layer-creation workflow is slightly shorter than the target; adding either neighboring full recipe/BSP topic would make it substantially longer."
+        },
+        {
+          "title": "BSP, machine and distro layers",
+          "start": 182,
+          "end": 213,
+          "readingMinutes": 24
+        },
+        {
+          "title": "Images",
+          "start": 214,
+          "end": 232,
+          "readingMinutes": 21
+        },
+        {
+          "title": "Writing recipes - going further",
+          "start": 233,
+          "end": 270,
+          "readingMinutes": 26
+        },
+        {
+          "title": "Licensing and software bills of materials",
+          "start": 271,
+          "end": 282,
+          "readingMinutes": 11,
+          "timingNote": "A compact but complete compliance topic. Do not pad it with the following SDK workflow, which serves a different learning goal."
+        },
+        {
+          "title": "The Yocto Project SDK and devtool",
+          "start": 283,
+          "end": 301,
+          "readingMinutes": 20
+        },
+        {
+          "title": "Release management, OTA updates and supplementary tooling",
+          "start": 302,
+          "end": 335,
+          "readingMinutes": 23
+        }
       ]
     },
     {
@@ -349,7 +642,7 @@
       "title": "Linux debugging, tracing, profiling and performance",
       "pages": 346,
       "sha256": "21ec3897920edf0f1538e75299e85804279c540454833f3c749f9932164ac6af",
-      "sections": [
+      "chapters": [
         {
           "title": "Course introduction and information",
           "start": 1,
@@ -419,6 +712,98 @@
           "title": "Last slides",
           "start": 344,
           "end": 346
+        }
+      ],
+      "sections": [
+        {
+          "title": "Linux Application Stack — Part 1: orientation and memory",
+          "start": 1,
+          "end": 39,
+          "readingMinutes": 26
+        },
+        {
+          "title": "Linux Application Stack — Part 2",
+          "start": 40,
+          "end": 63,
+          "readingMinutes": 24
+        },
+        {
+          "title": "Linux Common Analysis & Observability Tools — Part 1",
+          "start": 64,
+          "end": 82,
+          "readingMinutes": 21
+        },
+        {
+          "title": "Linux Common Analysis & Observability Tools — Part 2",
+          "start": 83,
+          "end": 98,
+          "readingMinutes": 21
+        },
+        {
+          "title": "Application Debugging",
+          "start": 99,
+          "end": 129,
+          "readingMinutes": 28
+        },
+        {
+          "title": "Application Tracing",
+          "start": 130,
+          "end": 149,
+          "readingMinutes": 23
+        },
+        {
+          "title": "Memory Issues",
+          "start": 150,
+          "end": 164,
+          "readingMinutes": 20
+        },
+        {
+          "title": "Application Profiling",
+          "start": 165,
+          "end": 189,
+          "readingMinutes": 22
+        },
+        {
+          "title": "System-wide Profiling & Tracing — Part 1",
+          "start": 190,
+          "end": 211,
+          "readingMinutes": 23
+        },
+        {
+          "title": "System-wide Profiling & Tracing — Part 2",
+          "start": 212,
+          "end": 238,
+          "readingMinutes": 25
+        },
+        {
+          "title": "System-wide Profiling & Tracing — Part 3",
+          "start": 239,
+          "end": 259,
+          "readingMinutes": 25
+        },
+        {
+          "title": "System-wide Profiling & Tracing — Part 4",
+          "start": 260,
+          "end": 276,
+          "readingMinutes": 23
+        },
+        {
+          "title": "Kernel Debugging — Part 1",
+          "start": 277,
+          "end": 301,
+          "readingMinutes": 24
+        },
+        {
+          "title": "Kernel Debugging — Part 2",
+          "start": 302,
+          "end": 324,
+          "readingMinutes": 25
+        },
+        {
+          "title": "Kernel Debugging — Part 3",
+          "start": 325,
+          "end": 346,
+          "readingMinutes": 20
         }
       ]
     }

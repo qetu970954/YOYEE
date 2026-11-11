@@ -3,12 +3,18 @@ const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
 const { decks } = require('./slides.json');
+const { labs } = require('./labs.json');
 
 const files = {
   '/': ['index.html', 'text/html; charset=utf-8'],
   '/styles.css': ['styles.css', 'text/css; charset=utf-8'],
   '/app.js': ['app.js', 'text/javascript; charset=utf-8'],
   '/slides.json': ['slides.json', 'application/json; charset=utf-8'],
+  '/labs.json': ['labs.json', 'application/json; charset=utf-8'],
+  ...Object.fromEntries(labs.map(lab => {
+    const file = `materials/bootlin/${lab.file}`;
+    return [`/${file}`, [file, 'application/pdf']];
+  })),
   ...Object.fromEntries(decks.flatMap(deck => deck.sections.map(section => {
     const file = `materials/bootlin/sections/${deck.id}/${section.start}-${section.end}.pdf`;
     return [`/${file}`, [file, 'application/pdf']];

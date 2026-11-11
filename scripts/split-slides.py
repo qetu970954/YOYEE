@@ -3,6 +3,7 @@
 import hashlib
 import json
 from pathlib import Path
+import re
 import tempfile
 
 from pypdf import PdfReader, PdfWriter
@@ -51,6 +52,10 @@ def main():
             expected_start = end + 1
         if expected_start != deck["pages"] + 1:
             raise ValueError(f"Incomplete coverage: {deck['id']}")
+        expected = {f"{section['start']}-{section['end']}.pdf" for section in deck["sections"]}
+        for stale in destination.glob("*.pdf"):
+            if re.fullmatch(r"\d+-\d+\.pdf", stale.name) and stale.name not in expected:
+                stale.unlink()
         print(f"{deck['title']}: {len(deck['sections'])} sections written to {destination}")
 
 
