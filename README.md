@@ -79,3 +79,4 @@ Before wiring, changing boot settings or writing media, identify the hardware, c
 - 20261111: Complete course 1, section 2. Have lab that use `crosstool-ng` to build my own compile tool chain on my HOST.
 - 20261115: Complete course 1, section 3, 4. Working on the U-Boot labs. Stuck at preparing a bootable micro-SD card (will bring the cable back tomorrow). Learn (universal bootloader), EL0 ~ EL3, TFA/ATF and some concepts about ARM's stuff.
 - 20261116: Comlpete the lab: Bootloader - U-Boot. Wow, many work to do. so clone the uboot -> make config for bbb -> Boot rom -> MLO (UBOOT SPL) -> UBOOT.img. And TFTP server.
+- 20261120: Understand course 1, section 5,6 - Intro to Linux kernel / init / rootfs. etccc -> Wait to do lab on Busy box
