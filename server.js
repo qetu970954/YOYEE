@@ -15,6 +15,10 @@ const files = {
     const file = `materials/bootlin/${lab.file}`;
     return [`/${file}`, [file, 'application/pdf']];
   })),
+  ...Object.fromEntries(labs.flatMap(lab => lab.exercises.map(exercise => {
+    const file = `materials/bootlin/exercises/${lab.id}/${exercise.start}-${exercise.end}.pdf`;
+    return [`/${file}`, [file, 'application/pdf']];
+  }))),
   ...Object.fromEntries(decks.flatMap(deck => deck.sections.map(section => {
     const file = `materials/bootlin/sections/${deck.id}/${section.start}-${section.end}.pdf`;
     return [`/${file}`, [file, 'application/pdf']];

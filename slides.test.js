@@ -9,6 +9,9 @@ const { decks } = require('./slides.json');
 const { labs } = require('./labs.json');
 const { spawnSync } = require('node:child_process');
 const { buildSections, wordCount } = require('./scripts/extract-slides.cjs');
+const materials = path.join(__dirname, 'materials', 'bootlin');
+const excerpt = (lab, exercise) => `exercises/${lab.id}/${exercise.start}-${exercise.end}.pdf`;
+const hasPdftotext = !spawnSync('pdftotext', ['-v']).error;
 
 test('the four pinned PDFs have complete contiguous reading chunks and source chapters', () => {
   assert.deepEqual(decks.map(deck => deck.id), ['embedded-linux', 'linux-kernel', 'yocto', 'debugging']);
@@ -57,7 +60,7 @@ test('reading estimates use content and reviewed interpretation time; unsafe bou
   assert.throws(() => buildSections(pages, [{ ...first, reviewMinutes: -1 }]), /Missing content review/);
 });
 
-test('the generated index is reproducible from the pinned PDFs and reading plan', { skip: !!spawnSync('pdftotext', ['-v']).error }, () => {
+test('the generated index is reproducible from the pinned PDFs and reading plan', { skip: !hasPdftotext }, () => {
   const result = spawnSync(process.execPath, ['scripts/extract-slides.cjs', '--check'], { cwd: __dirname, encoding: 'utf8' });
   assert.equal(result.status, 0, result.stderr);
 });
@@ -74,6 +77,49 @@ test('each course has an original pinned lab manual with its board variant ident
     assert.equal(createHash('sha256').update(pdf).digest('hex'), lab.sha256);
   }
   assert.match(labs.find(lab => lab.id === 'debugging').notice, /not BeagleBone Black/);
+});
+
+test('each manual is split into attributed exercise PDFs attached in cue order', () => {
+  for (const lab of labs) {
+    const deck = decks.find(deck => deck.id === lab.id);
+    let nextPage = 3;
+    let previousSlide = 0;
+    assert.deepEqual(fs.readdirSync(path.join(materials, 'exercises', lab.id)).sort(),
+      lab.exercises.map(exercise => path.basename(excerpt(lab, exercise))).sort());
+    for (const exercise of lab.exercises) {
+      assert.ok(exercise.slide >= previousSlide);
+      assert.equal(deck.sections.filter(section => section.start <= exercise.slide && exercise.slide <= section.end).length, 1);
+      assert.ok(exercise.title.trim());
+      assert.equal(exercise.start, nextPage);
+      assert.ok(exercise.end >= exercise.start);
+      const pdf = fs.readFileSync(path.join(materials, excerpt(lab, exercise)), 'latin1');
+      assert.equal((pdf.match(/\/Type\s*\/Page\b/g) || []).length, exercise.end - exercise.start + 1);
+      assert.match(pdf, /\/Author \(Bootlin\)/);
+      const metadata = (pdf.match(/^\/(Subject|Source) .*$/gm) || []).join('\n')
+        .replace(/\\([0-7]{3})/g, (_, octal) => String.fromCharCode(parseInt(octal, 8)));
+      assert.ok(metadata.includes('CC BY-SA 3.0') && metadata.includes(lab.source));
+      nextPage = exercise.end + 1;
+      previousSlide = exercise.slide;
+    }
+    assert.equal(nextPage, lab.pages + 1);
+  }
+});
+
+test('the split PDFs match the manual pages and every practical lab cue is mapped', { skip: !hasPdftotext }, () => {
+  function pageText(file, args = []) {
+    const result = spawnSync('pdftotext', ['-layout', ...args, path.join(materials, file), '-'], { encoding: 'utf8' });
+    assert.equal(result.status, 0, result.stderr);
+    return result.stdout;
+  }
+  for (const lab of labs) {
+    const cues = pageText(`${lab.id}-slides.pdf`).split('\f')
+      .flatMap((page, index) => /^\s*Practical lab\s*-/i.test(page) ? [index + 1] : []);
+    assert.deepEqual([...new Set(lab.exercises.map(exercise => exercise.slide))], cues);
+    for (const exercise of lab.exercises) {
+      assert.equal(pageText(excerpt(lab, exercise)),
+        pageText(lab.file, ['-f', exercise.start, '-l', exercise.end]), exercise.title);
+    }
+  }
 });
 
 test('server serves the index and each PDF without exposing arbitrary files', async t => {
@@ -113,7 +159,15 @@ test('server serves the index and each PDF without exposing arbitrary files', as
     const response = await fetch(url);
     assert.equal(response.status, 200);
     assert.deepEqual(Buffer.from(await response.arrayBuffer()), expected);
+    for (const exercise of lab.exercises) {
+      const file = excerpt(lab, exercise);
+      const excerptHead = await fetch(`${base}/materials/bootlin/${file}`, { method: 'HEAD' });
+      assert.equal(excerptHead.status, 200);
+      assert.equal(excerptHead.headers.get('content-type'), 'application/pdf');
+      assert.equal(Number(excerptHead.headers.get('content-length')), fs.statSync(path.join(materials, file)).size);
+    }
   }
+  assert.equal((await fetch(`${base}/materials/bootlin/exercises/debugging/1-34.pdf`)).status, 404);
   assert.equal((await fetch(`${base}/materials/bootlin/debugging-bbb-labs.pdf`)).status, 404);
   assert.equal((await fetch(`${base}/materials/bootlin/sections/embedded-linux/1-999.pdf`)).status, 404);
   assert.equal((await fetch(`${base}/materials/bootlin/embedded-linux-slides.pdf`)).status, 404);

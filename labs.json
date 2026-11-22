@@ -7,7 +7,21 @@
       "file": "embedded-linux-bbb-labs.pdf",
       "pages": 71,
       "source": "https://bootlin.com/doc/training/embedded-linux/embedded-linux-bbb-labs.pdf",
-      "sha256": "d7413634034c9b93f62e3cae47ccd24ad7065f443ddfec4cc8ebc1550bdf85e1"
+      "sha256": "d7413634034c9b93f62e3cae47ccd24ad7065f443ddfec4cc8ebc1550bdf85e1",
+      "exercises": [
+        { "slide": 47, "start": 3, "end": 4, "title": "Training setup" },
+        { "slide": 85, "start": 5, "end": 7, "title": "Build a cross-toolchain with Crosstool-NG" },
+        { "slide": 166, "start": 8, "end": 13, "title": "Bootloader: U-Boot" },
+        { "slide": 183, "start": 14, "end": 15, "title": "Fetch the Linux kernel sources" },
+        { "slide": 217, "start": 16, "end": 18, "title": "Cross-compile the Linux kernel" },
+        { "slide": 256, "start": 19, "end": 23, "title": "Build a tiny system with BusyBox" },
+        { "slide": 343, "start": 24, "end": 36, "title": "Access hardware devices" },
+        { "slide": 371, "start": 37, "end": 39, "title": "Block filesystems" },
+        { "slide": 415, "start": 40, "end": 51, "title": "Cross-compile libraries and applications" },
+        { "slide": 451, "start": 52, "end": 58, "title": "Build a system with Buildroot" },
+        { "slide": 501, "start": 59, "end": 62, "title": "System integration with systemd" },
+        { "slide": 542, "start": 63, "end": 71, "title": "Application development and debugging" }
+      ]
     },
     {
       "id": "linux-kernel",
@@ -15,7 +29,25 @@
       "file": "linux-kernel-bbb-labs.pdf",
       "pages": 55,
       "source": "https://bootlin.com/doc/training/linux-kernel/linux-kernel-bbb-labs.pdf",
-      "sha256": "5364fdde2011b3ec1d3e22881a3fec519a0b95383884eb90a2f52dafe3e0c358"
+      "sha256": "5364fdde2011b3ec1d3e22881a3fec519a0b95383884eb90a2f52dafe3e0c358",
+      "exercises": [
+        { "slide": 16, "start": 3, "end": 4, "title": "Training setup" },
+        { "slide": 33, "start": 5, "end": 6, "title": "Download the kernel source" },
+        { "slide": 48, "start": 7, "end": 7, "title": "Explore the kernel source" },
+        { "slide": 83, "start": 8, "end": 11, "title": "Board and bootloader setup" },
+        { "slide": 83, "start": 12, "end": 15, "title": "Compile and boot the kernel" },
+        { "slide": 108, "start": 16, "end": 18, "title": "Write a kernel module" },
+        { "slide": 164, "start": 19, "end": 23, "title": "Describe hardware devices" },
+        { "slide": 175, "start": 24, "end": 27, "title": "Set up pin muxing for I²C" },
+        { "slide": 223, "start": 28, "end": 31, "title": "Talk to the Nunchuk over I²C" },
+        { "slide": 265, "start": 32, "end": 36, "title": "Expose the Nunchuk to user space" },
+        { "slide": 308, "start": 37, "end": 41, "title": "Access I/O memory and ports" },
+        { "slide": 315, "start": 42, "end": 45, "title": "Write an output-only serial driver" },
+        { "slide": 351, "start": 46, "end": 47, "title": "Sleep and handle interrupts" },
+        { "slide": 374, "start": 48, "end": 48, "title": "Locking" },
+        { "slide": 400, "start": 49, "end": 52, "title": "DMA" },
+        { "slide": 420, "start": 53, "end": 55, "title": "Kernel debugging and crash analysis" }
+      ]
     },
     {
       "id": "yocto",
@@ -23,7 +55,19 @@
       "file": "yocto-bbb-labs.pdf",
       "pages": 28,
       "source": "https://bootlin.com/doc/training/yocto/yocto-bbb-labs.pdf",
-      "sha256": "f90bc117e211cd0ca1c236ef78217070c02c10729800e04e1ac43577166e6538"
+      "sha256": "f90bc117e211cd0ca1c236ef78217070c02c10729800e04e1ac43577166e6538",
+      "exercises": [
+        { "slide": 17, "start": 3, "end": 4, "title": "Training setup" },
+        { "slide": 60, "start": 5, "end": 7, "title": "First Yocto build" },
+        { "slide": 89, "start": 8, "end": 10, "title": "Advanced Yocto configuration" },
+        { "slide": 129, "start": 11, "end": 12, "title": "Add a custom application" },
+        { "slide": 180, "start": 13, "end": 14, "title": "Create a custom layer" },
+        { "slide": 181, "start": 15, "end": 17, "title": "Extend a recipe" },
+        { "slide": 204, "start": 18, "end": 19, "title": "Create a custom machine configuration" },
+        { "slide": 232, "start": 20, "end": 21, "title": "Create a custom image" },
+        { "slide": 295, "start": 22, "end": 23, "title": "Create and use a Yocto SDK" },
+        { "slide": 301, "start": 24, "end": 28, "title": "Use devtool" }
+      ]
     },
     {
       "id": "debugging",
@@ -32,7 +76,22 @@
       "pages": 34,
       "source": "https://bootlin.com/doc/training/debugging/debugging-beagleplay-labs.pdf",
       "sha256": "0b77214cd3efaf5d5e952f3831d49943ad2c3360791090f50fe3de6897aa05ce",
-      "notice": "This manual targets BeaglePlay, not BeagleBone Black. Hardware steps require separate verification."
+      "notice": "BeaglePlay only, not BeagleBone Black. Some slides show STM32MP1.",
+      "exercises": [
+        { "slide": 15, "start": 3, "end": 4, "title": "Training setup" },
+        { "slide": 63, "start": 5, "end": 7, "title": "Prepare the BeaglePlay system" },
+        { "slide": 98, "start": 8, "end": 8, "title": "System status" },
+        { "slide": 129, "start": 9, "end": 12, "title": "Solve an application crash" },
+        { "slide": 144, "start": 13, "end": 14, "title": "Trace an application" },
+        { "slide": 164, "start": 15, "end": 16, "title": "Debug memory issues" },
+        { "slide": 189, "start": 17, "end": 19, "title": "Profile an application" },
+        { "slide": 230, "start": 20, "end": 21, "title": "System-wide profiling and tracing" },
+        { "slide": 259, "start": 22, "end": 22, "title": "Build an eBPF tool with BCC" },
+        { "slide": 274, "start": 23, "end": 26, "title": "Build an eBPF tool with libbpf" },
+        { "slide": 311, "start": 27, "end": 28, "title": "Kernel debugging: built-in testing" },
+        { "slide": 328, "start": 29, "end": 32, "title": "Kernel debugging: OOPS and KGDB" },
+        { "slide": 339, "start": 33, "end": 34, "title": "Kernel debugging: kexec and kdump" }
+      ]
     }
   ]
 }

@@ -51,12 +51,14 @@ test('reading chunks, progress carry-over, navigation, labs, fullscreen, persist
     await call('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13, text: '\r' });
     await call('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13 });
   };
-  const checkFullscreen = async (click = false) => {
+  const checkFullscreen = async (click = false, prefix = '') => {
+    const viewer = `document.querySelector('${prefix}.slide-viewer')`;
+    const button = `document.querySelector('${prefix}[data-fullscreen]')`;
     const progress = await run(`localStorage.getItem('${storageKey}')`);
-    assert.equal(await run("(() => { const button = document.querySelector('[data-fullscreen]'); const viewer = document.querySelector('.slide-viewer').getBoundingClientRect(); const rect = button.getBoundingClientRect(); return button.parentElement.matches('.pdf-viewer') && rect.left >= viewer.left && rect.top >= viewer.top && rect.right <= viewer.right && rect.bottom <= viewer.bottom; })()"), true);
-    await run("window.fullscreenViewer = document.querySelector('.slide-viewer'); document.querySelector('[data-fullscreen]').focus()");
+    assert.equal(await run(`(() => { const button = ${button}; const viewer = ${viewer}.getBoundingClientRect(); const rect = button.getBoundingClientRect(); return button.parentElement.matches('.pdf-viewer') && rect.left >= viewer.left && rect.top >= viewer.top && rect.right <= viewer.right && rect.bottom <= viewer.bottom; })()`), true);
+    await run(`window.fullscreenViewer = ${viewer}; ${button}.focus()`);
     if (click) {
-      const point = await run("(() => { const rect = document.querySelector('[data-fullscreen]').getBoundingClientRect(); return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }; })()");
+      const point = await run(`(() => { const rect = ${button}.getBoundingClientRect(); return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }; })()`);
       await call('Input.dispatchMouseEvent', { type: 'mousePressed', ...point, button: 'left', clickCount: 1 });
       await call('Input.dispatchMouseEvent', { type: 'mouseReleased', ...point, button: 'left', clickCount: 1 });
     } else await enter();
@@ -64,7 +66,7 @@ test('reading chunks, progress carry-over, navigation, labs, fullscreen, persist
     await wait('fullscreenViewer.getBoundingClientRect().height >= innerHeight - 1 && fullscreenViewer.getBoundingClientRect().width >= innerWidth - 1');
     await run('document.exitFullscreen()');
     await wait('!document.fullscreenElement');
-    assert.equal(await run("document.querySelector('.slide-viewer') === window.fullscreenViewer"), true);
+    assert.equal(await run(`${viewer} === window.fullscreenViewer`), true);
     assert.equal(await run(`localStorage.getItem('${storageKey}')`), progress);
   };
   await wait("document.querySelectorAll('.course-card').length === 4");
@@ -77,7 +79,7 @@ test('reading chunks, progress carry-over, navigation, labs, fullscreen, persist
   assert.doesNotMatch(await run('document.body.textContent'), /workspace/i);
   assert.equal(await run("document.querySelector('.page-heading .subtitle').textContent"), 'Your Own Yocto & Embedded Education.');
   assert.equal(await run("document.querySelectorAll('.page-heading .subtitle')[1].textContent"), 'Embedded Linux · Kernel Drivers · Yocto · Debugging');
-  assert.equal(await run("document.querySelector('#nav-courses, footer')"), null);
+  assert.equal(await run("document.querySelector('#nav-courses, #nav-labs, footer')"), null);
   assert.match(await run("document.querySelector('.source-credit').textContent"), /Slides © Bootlin/);
   assert.match(await run("document.querySelector('.hero p').textContent"), /Est\. \d+ min reading/);
   assert.deepEqual(await run("Array.from(document.querySelectorAll('.course-card h2'), e => e.textContent)"), decks.map(deck => deck.title));
@@ -88,6 +90,9 @@ test('reading chunks, progress carry-over, navigation, labs, fullscreen, persist
     assert.equal(await run("document.querySelectorAll('.section-row').length"), deck.sections.length);
     assert.deepEqual(await run("Array.from(document.querySelectorAll('.section-link strong'), e => e.textContent)"), deck.sections.map(section => section.title));
     assert.ok(await run("Array.from(document.querySelectorAll('.section-link small')).every(e => /Slides \\d+–\\d+ · Est\\. \\d+ min reading/.test(e.textContent))"));
+    const { exercises } = labs.find(lab => lab.id === deck.id);
+    assert.deepEqual(await run("Array.from(document.querySelectorAll('.section-row'), row => !!row.querySelector('.lab-badge'))"),
+      deck.sections.map(section => exercises.some(exercise => section.start <= exercise.slide && exercise.slide <= section.end)));
   }
   // A completed old chapter becomes three completed parts without touching its saved data.
   const legacy = JSON.stringify({ 'embedded-linux:86': true });
@@ -133,18 +138,18 @@ test('reading chunks, progress carry-over, navigation, labs, fullscreen, persist
   await wait("!!document.querySelector('.slide-viewer')");
   assert.equal(await run("document.querySelector('.slide-viewer').getAttribute('src')"), '/materials/bootlin/sections/embedded-linux/48-85.pdf');
   assert.equal(await run("document.querySelector('.course-nav .active')?.dataset.course"), 'embedded-linux');
-  assert.equal(await run("document.querySelector('.slide-content .subtitle')"), null);
+  assert.equal(await run("document.querySelector('.page-heading .subtitle')"), null);
   assert.match(await run("document.querySelector('.viewer-hint').textContent"), /Slides 48–85 · Est\. 24 min reading/);
   assert.equal(await run(`document.querySelector('input[data-start="48"]').checked`), true);
-  assert.equal(await run("Array.from(document.querySelectorAll('a')).some(a => a.textContent.includes('Open PDF'))"), false);
+  assert.equal(await run("Array.from(document.querySelectorAll('a')).some(a => a.getClientRects().length && a.textContent.includes('Open PDF'))"), false);
   await run(`window.currentViewer = document.querySelector('.slide-viewer'); window.sawProgressEvent = false; window.addEventListener('storage', e => { if (e.key === '${storageKey}') window.sawProgressEvent = true; }); other.contentDocument.querySelector('input[data-start="257"]').click()`);
   await wait(`${saved}['embedded-linux:257-294'] === true && window.sawProgressEvent`);
   assert.equal(await run("document.querySelector('.slide-viewer') === window.currentViewer"), true);
   await call('Emulation.setDeviceMetricsOverride', { width: 1920, height: 1080, deviceScaleFactor: 1, mobile: false });
   assert.equal(await run("document.querySelector('.slide-viewer').getBoundingClientRect().width >= document.querySelector('.main').getBoundingClientRect().width - 50"), true);
   assert.equal(await run("document.querySelector('.slide-viewer').getBoundingClientRect().height > innerHeight * 0.55"), true);
-  assert.equal(await run('document.documentElement.scrollHeight <= innerHeight'), true);
-  assert.equal(await run("document.querySelector('.section-navigation').getBoundingClientRect().bottom <= innerHeight"), true);
+  assert.ok(await run('document.documentElement.scrollHeight <= innerHeight'), 'the hidden lab does not push the slides off-screen');
+  assert.equal(await run("document.getElementById('lab-tab').textContent"), 'Lab');
   await run("window.originalFullscreen = document.querySelector('.slide-viewer').requestFullscreen; document.querySelector('.slide-viewer').requestFullscreen = async () => { throw new Error('blocked'); }; document.querySelector('[data-fullscreen]').click()");
   await wait("document.getElementById('fullscreen-status').textContent.includes('Could not enter')");
   await run("document.querySelector('.slide-viewer').requestFullscreen = window.originalFullscreen");
@@ -161,15 +166,15 @@ test('reading chunks, progress carry-over, navigation, labs, fullscreen, persist
   await run(`Object.defineProperty(navigator, 'locks', { value: undefined, configurable: true }); document.querySelector('input[data-start="48"]').click()`);
   await wait("document.getElementById('save-status').textContent.includes('Web Locks')");
   assert.equal(await run(`document.querySelector('input[data-start="48"]').checked`), true);
-  await run('delete navigator.locks');
+  await run("delete navigator.locks; location.hash = '#slide/embedded-linux/125'");
+  await wait("document.querySelector('.slide-viewer')?.getAttribute('src') === '/materials/bootlin/sections/embedded-linux/125-142.pdf'");
+  assert.equal(await run("document.querySelector('#lab-panel, .section-tabs')"), null);
   for (const [width, height] of [[390, 844], [320, 568]]) {
     await call('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: false });
     assert.equal(await run('document.documentElement.scrollWidth <= innerWidth'), true);
     assert.equal(await run('document.documentElement.scrollHeight <= innerHeight'), true);
     assert.equal(await run("document.querySelector('.section-navigation').getBoundingClientRect().bottom <= innerHeight"), true);
   }
-  await run("location.hash = '#slide/embedded-linux/388'");
-  await wait("document.querySelector('h1')?.textContent === 'Cross-compiling user-space libraries and applications'");
   assert.deepEqual(await run("(() => { const title = document.querySelector('h1'); const original = title.textContent; const failures = []; for (const deck of decks) for (const section of deck.sections) { title.textContent = section.title; if (document.documentElement.scrollHeight > innerHeight || document.querySelector('.slide-viewer').getBoundingClientRect().height <= 80) failures.push(section.title); } title.textContent = original; return failures; })()"), []);
   await run("document.getElementById('save-status').textContent = 'Could not save progress. Check browser storage permissions and saved data.'");
   assert.equal(await run('document.documentElement.scrollHeight <= innerHeight'), true);
@@ -183,7 +188,7 @@ test('reading chunks, progress carry-over, navigation, labs, fullscreen, persist
   await run("updateProgress('embedded-linux:48-85', false)");
   assert.equal(await run(`document.querySelector('input[data-start="1"]').checked`), false);
   await run("Storage.prototype.originalSetItem = Storage.prototype.setItem; Storage.prototype.setItem = () => { throw new Error('blocked'); }; document.querySelector('[data-next-section]').click()");
-  await wait("document.getElementById('save-status').textContent.includes('Could not save')");
+  await wait("document.getElementById('next-status').textContent.includes('Could not save')");
   assert.equal(await run('location.hash'), '#slide/embedded-linux/18');
   assert.equal(await run(`${saved}['embedded-linux:1-47'] === true`), false);
   await call('Page.bringToFront');
@@ -206,20 +211,74 @@ test('reading chunks, progress carry-over, navigation, labs, fullscreen, persist
   await run(`navigator.locks.request('${storageKey}', () => true)`);
   assert.equal(await run('location.hash'), '#home');
   const progressBeforeLabs = await run(`localStorage.getItem('${storageKey}')`);
-  await run("document.getElementById('nav-labs').click()");
+  for (const lab of labs) {
+    const viewport = lab.id === 'embedded-linux' ? { width: 1920, height: 1080 } : { width: 320, height: 568 };
+    await call('Emulation.setDeviceMetricsOverride', { ...viewport, deviceScaleFactor: 1, mobile: false });
+    const deck = decks.find(deck => deck.id === lab.id);
+    const inSection = section => lab.exercises.filter(exercise => section.start <= exercise.slide && exercise.slide <= section.end);
+    const section = deck.sections.find(section => inSection(section).length > 1);
+    const exercises = inSection(section);
+    const hash = `#slide/${deck.id}/${section.start}`;
+    const pdf = `/materials/bootlin/exercises/${lab.id}/${exercises[0].start}-${exercises[0].end}.pdf`;
+    await run(`location.hash = '${hash}'`);
+    await wait(`document.querySelector('.course-nav .active')?.dataset.course === '${lab.id}' && !!document.getElementById('lab-panel')`);
+    assert.deepEqual(await run("Array.from(document.querySelectorAll('#lab-picker option'), option => option.textContent)"), exercises.map((exercise, i) => `${i + 1}. ${exercise.title}`));
+    assert.equal(await run("document.getElementById('lab-tab').textContent"), `Labs (${exercises.length})`);
+    assert.equal(await run("document.querySelector('[role=tab][aria-selected=true]').id"), 'slides-tab');
+    assert.equal(await run("document.getElementById('lab-panel').getClientRects().length"), 0);
+    assert.equal(await run("document.querySelector('.lab-exercise iframe[src]')"), null);
+    if (lab.notice) assert.match(await run("document.querySelector('#lab-panel > .warning').textContent"), /BeaglePlay.*not BeagleBone Black.*STM32MP1/);
+    await run("window.slideFrame = document.querySelector('.slide-viewer'); window.slideWindow = slideFrame.contentWindow; window.slideRect = slideFrame.getBoundingClientRect(); document.getElementById('slides-tab').focus()");
+    await call('Input.dispatchKeyEvent', { type: 'keyDown', key: 'ArrowRight', code: 'ArrowRight', windowsVirtualKeyCode: 39 });
+    await wait("document.activeElement.id === 'lab-tab' && document.getElementById('slides-panel').hidden");
+    assert.equal(await run("document.querySelector('[role=tab][aria-selected=true]').id"), 'lab-tab');
+    assert.equal(await run("document.getElementById('slides-tab').tabIndex"), -1);
+    assert.equal(await run("document.getElementById('slides-panel').getClientRects().length"), 0);
+    assert.equal(await run("document.getElementById('lab-picker').hidden"), false);
+    const activeViewer = '.lab-exercise:not([hidden])';
+    await wait(`document.querySelector('${activeViewer} iframe')?.getAttribute('src') === '${pdf}'`);
+    assert.equal(await run("document.querySelectorAll('.lab-exercise iframe[src]').length"), 1);
+    assert.equal(await run(`document.querySelector('${activeViewer} a[target=_blank]').getAttribute('href')`), pdf);
+    assert.equal(await run(`fetch('${pdf}').then(response => response.ok)`), true);
+    assert.equal(await run('document.documentElement.scrollWidth <= innerWidth && document.documentElement.scrollHeight <= innerHeight'), true);
+    const metrics = await run(`(() => {
+      const panel = document.getElementById('lab-panel');
+      const active = document.querySelector('${activeViewer}');
+      const rect = active.querySelector('iframe').getBoundingClientRect();
+      return { overflow: Math.max(panel.scrollHeight - panel.clientHeight, active.scrollHeight - active.clientHeight),
+        top: rect.top - slideRect.top, width: rect.width - slideRect.width, height: rect.height };
+    })()`);
+    assert.ok(metrics.overflow <= 1 && metrics.top === 0 && metrics.width === 0 && metrics.height > 80,
+      `${lab.id}: same full-width viewer, no outer scrolling (${JSON.stringify(metrics)})`);
+    if (lab.id === 'yocto') await checkFullscreen(false, `${activeViewer} `);
+    await run("(() => { const picker = document.getElementById('lab-picker'); picker.selectedIndex = 1; picker.dispatchEvent(new Event('change')); })()");
+    const secondPdf = `/materials/bootlin/exercises/${lab.id}/${exercises[1].start}-${exercises[1].end}.pdf`;
+    assert.equal(await run(`document.querySelector('${activeViewer} iframe').getAttribute('src')`), secondPdf);
+    assert.equal(await run(`document.querySelectorAll('${activeViewer}').length`), 1);
+    await run(`window.labFrame = document.querySelector('${activeViewer} iframe'); window.labWindow = labFrame.contentWindow; document.getElementById('slides-tab').click()`);
+    assert.equal(await run('document.activeElement.id'), 'slides-tab');
+    assert.equal(await run('location.hash'), hash);
+    assert.equal(await run("document.querySelector('.slide-viewer') === slideFrame && slideFrame.contentWindow === slideWindow"), true);
+    assert.equal(await run("document.getElementById('lab-panel').getClientRects().length"), 0);
+    await run("document.getElementById('lab-tab').click()");
+    assert.equal(await run(`document.querySelector('${activeViewer} iframe') === labFrame && labFrame.contentWindow === labWindow`), true);
+    assert.equal(await run(`localStorage.getItem('${storageKey}')`), progressBeforeLabs);
+  }
+  await run("location.hash = '#labs'");
   await wait("document.querySelector('h1')?.textContent === 'Practical labs'");
   assert.equal(await run("document.querySelectorAll('.course-card').length"), 4);
   assert.match(await run('document.body.textContent'), /not BeagleBone Black/);
   for (const lab of labs) {
     await run(`document.querySelector('a[href="#lab/${lab.id}"]').click()`);
     await wait(`document.querySelector('.slide-viewer')?.getAttribute('src') === '/materials/bootlin/${lab.file}'`);
-    assert.equal(await run("!!document.querySelector('#nav-labs.active')"), true);
-    assert.equal(await run("document.querySelector('.course-nav .active')"), null);
+    assert.equal(await run("document.querySelector('.course-nav .active')?.dataset.course"), lab.id);
     assert.match(await run("document.querySelector('.subtitle').textContent"), new RegExp(lab.board));
     assert.equal(await run("document.querySelector('input[data-deck]')"), null);
     assert.equal(await run("document.querySelector('.subtitle a').href"), lab.source);
     if (lab.notice) assert.match(await run('document.body.textContent'), /not BeagleBone Black/);
-    await run(`document.querySelector('a[href="#labs"]').click()`);
+    await run(`document.querySelector('.slide-content a[href="#course/${lab.id}"]').click()`);
+    await wait(`!!document.querySelector('.course-lab-note a[href="#lab/${lab.id}"]')`);
+    await run("location.hash = '#labs'");
     await wait("document.querySelector('h1')?.textContent === 'Practical labs'");
   }
   await run("location.hash = '#lab/debugging'");

@@ -16,7 +16,7 @@ New stuff goes on top. What I did. Where I got stuck. What’s next. Link notes 
 
 Install Node.js. Run `npm start` in this folder. Open [localhost:3000](http://localhost:3000).
 
-Four Bootlin courses. About 25 min per section. Slides and lab PDFs work offline. Find the manuals in **Labs**.
+Four Bootlin courses. About 25 min per section. See a **Lab** badge? Open that section. Switch between **Slides** and **Lab** at the top. More than one lab? Pick one from the list. Both PDFs work offline. Need the whole manual? Find it on the course page.
 
 **Next section** marks this one done. Lab PDFs don’t count. Progress stays in this browser. Clear site data? Progress gone. Save or reset needs Web Locks.
 
@@ -37,5 +37,5 @@ Before touching hardware: check the board model, voltage limits, and recovery st
 
 1. Want different section breaks? Edit the [reading plan](scripts/reading-plan.json), not the index. See [how we split the slides](docs/reading-chunks.md).
 2. Install `pdftotext`. Run `node scripts/extract-slides.cjs` to rebuild the index.
-3. In a Python virtual environment, run `pip install -r scripts/requirements.txt`, then `python scripts/split-slides.py`. Restart the server.
+3. In a Python virtual environment, run `pip install -r scripts/requirements.txt`, then `python scripts/split-slides.py` to rebuild slide and lab PDFs. Restart the server.
 4. Run `npm test`. Browser not found? Set `BROWSER_PATH` to a supported browser’s executable.

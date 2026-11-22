@@ -13,7 +13,7 @@ Apply this to all four slide courses, in their existing order:
 3. Yocto Project and OpenEmbedded
 4. Linux debugging, tracing, profiling and performance
 
-Lab manuals and their organization are unchanged. See [the glossary](../GLOSSARY.md) for the distinction between a source chapter and a reading chunk.
+Reading chunk boundaries are independent of the lab manuals. The original manuals remain intact; exercise excerpts open in the Lab tab of their matching section. See [the glossary](../GLOSSARY.md) for the distinction between a source chapter and a reading chunk.
 
 ## Reading time
 
@@ -65,8 +65,15 @@ There are **62 chunks**, **57** in the 20–30 minute band. The five intentional
 
 - Show each chunk's estimated reading time alongside its original slide range, clearly identified as approximate.
 - Present the new names and grouping consistently in course lists, the next-learning suggestion and the PDF viewer.
-- Keep course navigation, previous/next navigation, completion controls, Labs access and full-screen viewing working.
+- Keep course navigation, previous/next navigation, completion controls, lab access and full-screen viewing working.
 - Reading time excludes practical lab work; reading a lab manual still does not affect slide completion.
+
+### Labs inside each section
+
+- `labs.json` maps each exercise to its yellow-hat **Practical lab** cue by original slide number. Match the cue to the section that contains it without changing slide ranges or progress keys.
+- Exercise ranges cover the manuals from page 3 (after the cover and license) onward. Kernel drivers slide 83 introduces two exercises, so both are attached to that cue. Use the full manual for front matter and the original notices.
+- When changing a pinned source, review the cue slides, exercise headings and board variants again. Run `scripts/split-slides.py` to regenerate the excerpts with the original PDF pages and Bootlin source/license metadata.
+- The debugging slides show STM32MP1 in places. The included debugging manual is for BeaglePlay, not a BeagleBone Black or STM32MP1 substitute.
 
 ## Existing progress
 
